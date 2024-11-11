@@ -20,7 +20,6 @@ const bot = mineflayer.createBot({
 })
 
 bot.on('spawn', () => {
-    console.log(bot.physics)
     // bot.chat('Hello, I am a bot that attacks the player that sends a message or the nearest entity (excluding players)')
   bot.on('chat', (username, message) => {
     if (message === 'attack me') attackPlayer(username)
@@ -28,11 +27,22 @@ bot.on('spawn', () => {
   })
 })
 
-bot.on('move', (pos) => {
-    console.log(pos)
-    console.log(`I am at ${pos.x}, ${pos.y}, ${pos.z}`)
-    console.log(bot.blockAt(pos.offset(0, -1, 0))?.name)
-})
+bot._client.chat = (text) => {
+    client.write('text', {
+        type: 'chat',
+        needs_translation: false,
+        source_name: options.username,
+        xuid: '',
+        platform_chat_id: '',
+        message: text
+      });
+}
+
+// bot.on('move', (pos) => {
+//     console.log(pos)
+//     console.log(`I am at ${pos.x}, ${pos.y}, ${pos.z}`)
+//     console.log(bot.blockAt(pos.offset(0, -1, 0))?.name)
+// })
 
 function attackPlayer (username) {
   const player = bot.players[username]
