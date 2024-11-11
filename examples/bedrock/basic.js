@@ -21,7 +21,7 @@ const bot = mineflayer.createBot({
 
 bot.once('spawn', () => {
     // bot.chat('Hello, I am a bot that attacks the player that sends a message or the nearest entity (excluding players)')
-   
+    console.log(bot.game.itemstates)
     bot.on('chat', (username, message) => {
       if (username === bot.username) return
       bot.chat(`I heard you, ${username}: ${message}`)
@@ -34,11 +34,23 @@ bot.on('health', () => {
     console.log(`I have ${bot.health} health and ${bot.food} food`)
 })
 
-bot.on('move', (pos) => {
-    console.log(pos)
-    console.log(`I am at ${pos.x}, ${pos.y}, ${pos.z}`)
-    console.log(bot.blockAt(pos.offset(0, -1, 0))?.name)
+bot._client.on('packet', (packet) => {
+  if (packet.data.name.includes('chunk')) return
+  if (packet.data.name.includes('move')) return
+  if (packet.data.name.includes('add_player')) return
+  if (packet.data.name.includes('add_item_entity')) return
+  if (packet.buffer.length > 5000)
+  console.log(packet.data.name);
+if (packet.data.name === 'start_game') {
+    console.log(packet.data.params)
+
+}
 })
+// bot.on('move', (pos) => {
+//     console.log(pos)
+//     console.log(`I am at ${pos.x}, ${pos.y}, ${pos.z}`)
+//     console.log(bot.blockAt(pos.offset(0, -1000, 0))?.name)
+// })
 
 function attackPlayer (username) {
   const player = bot.players[username]
