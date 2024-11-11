@@ -1,5 +1,9 @@
 # shared with .npmignore
 # different than .npmignore
+
+# for testing
+bedrock-protocol-docs
+
 node_modules
 package-lock.json
 yarn.lock

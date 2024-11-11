@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events'
 import TypedEmitter from 'typed-emitter'
 import { Client, ClientOptions } from 'minecraft-protocol'
+import { Client as BClient } from 'bedrock-protocol'
 import { Vec3 } from 'vec3'
 import { Item } from 'prismarine-item'
 import { Window } from 'prismarine-windows'
@@ -199,7 +200,7 @@ export interface Bot extends TypedEmitter<BotEvents> {
   controlState: ControlStateStatus
   creative: creativeMethods
   world: world.WorldSync
-  _client: Client
+  _client: BClient
   heldItem: Item | null
   usingHeldItem: boolean
   currentWindow: Window | null

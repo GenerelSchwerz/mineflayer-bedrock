@@ -19,30 +19,26 @@ const bot = mineflayer.createBot({
   password: process.argv[6]
 })
 
-bot.on('spawn', () => {
+bot.once('spawn', () => {
     // bot.chat('Hello, I am a bot that attacks the player that sends a message or the nearest entity (excluding players)')
-  bot.on('chat', (username, message) => {
-    if (message === 'attack me') attackPlayer(username)
-    else if (message === 'attack') attackEntity()
-  })
+   
+    bot.on('chat', (username, message) => {
+      if (username === bot.username) return
+      bot.chat(`I heard you, ${username}: ${message}`)
+      if (message === 'attack me') attackPlayer(username)
+      else if (message === 'attack') attackEntity()
+    })
 })
 
-bot._client.chat = (text) => {
-    client.write('text', {
-        type: 'chat',
-        needs_translation: false,
-        source_name: options.username,
-        xuid: '',
-        platform_chat_id: '',
-        message: text
-      });
-}
+bot.on('health', () => {
+    console.log(`I have ${bot.health} health and ${bot.food} food`)
+})
 
-// bot.on('move', (pos) => {
-//     console.log(pos)
-//     console.log(`I am at ${pos.x}, ${pos.y}, ${pos.z}`)
-//     console.log(bot.blockAt(pos.offset(0, -1, 0))?.name)
-// })
+bot.on('move', (pos) => {
+    console.log(pos)
+    console.log(`I am at ${pos.x}, ${pos.y}, ${pos.z}`)
+    console.log(bot.blockAt(pos.offset(0, -1, 0))?.name)
+})
 
 function attackPlayer (username) {
   const player = bot.players[username]
